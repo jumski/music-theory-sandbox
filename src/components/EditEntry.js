@@ -20,12 +20,8 @@ export default function EditEntry({ entry, onSave }) {
   return <div style={{opacity: isSaving ? '0.4' : '1'}}>
     <h3>{date} <input type="text" value={notes} onChange={setNotes}/></h3>
     <ul>{Object.entries(parameters).map(([name, value]) => {
-      return <li key={name}>
-        {name}:
-        <input
-          onChange={() => setParameter(name, !value)}
-          type="checkbox"
-          checked={value}/>
+      return <li onClick={() => setParameter(name, !value)} style={{cursor: 'pointer'}} key={name}>
+        {name}: <input type="checkbox" checked={value}/>
       </li>;
     })}</ul>
 
