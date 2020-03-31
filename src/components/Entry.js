@@ -1,27 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
+import ShowEntry from './ShowEntry';
+import EditEntry from './EditEntry';
 
-function Entry({ entry }) {
-  const { notes, date } = entry.data();
-  const [parameters, setParameters] = useState(entry.data().parameters);
+function Entry(props) {
+  const [isEditing, setEditing] = useState(false);
+  const [entry, setEntry] = useState(props.entry);
 
-  function toggleParameter(param) {
-    const { [param]: currentValue } = parameters;
-    const newParameters = { ...parameters, [param]: !currentValue };
+  useEffect(() => {
+    entry.ref.onSnapshot(setEntry)
+  }, []);
 
-    entry.ref.set({ parameters: newParameters }, { merge: true })
-    setParameters(newParameters);
+  if (isEditing) {
+    return <EditEntry entry={entry} onSave={() => setEditing(false)}/>;
   }
-
-  return <li>
-    <h3>{date} ({notes})</h3>
-    {Object.entries(parameters).map(([name, value]) => {
-      return <span key={name} onClick={() => toggleParameter(name)}>
-        {name}: {value ? 'tak' : 'nie'},
-        <br/>
-      </span>
-    })}
-  </li>;
+  else {
+    return <ShowEntry entry={entry} onClick={() => setEditing(true)}/>;
+  }
 }
 
 export default withFirebase(Entry);
