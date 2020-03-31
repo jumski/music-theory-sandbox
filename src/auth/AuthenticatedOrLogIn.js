@@ -5,7 +5,7 @@ import CurrentUserContext from './context';
 // This components contains signin/signout logic
 // It will render "Log in via google!" button if no auth session is found,
 // or render children if session is found.
-function AuthenticatedOrLogIn({ children, firebase, onSignIn }) {
+function AuthenticatedOrLogIn({ children, firebase, onSignIn = ()=>{} }) {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
