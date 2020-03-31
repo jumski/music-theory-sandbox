@@ -7,11 +7,8 @@ function Tracker({ firestore: db, trackerId }) {
   const [entries, setEntries] = useState([]);
 
   async function fetchTrackerAndEntries(trackerId) {
-    const tracker = await db.collection('trackers')
-      .doc(trackerId.toString()).get();
+    const tracker = await db.collection('trackers').doc(trackerId.toString()).get();
     const entries = await Promise.all(tracker.data().entries.map(e => e.get()));
-
-    console.log('x', entries[0].data());
 
     return { tracker, entries };
   }
