@@ -9,15 +9,8 @@ function AuthenticatedOrLogIn({ children, firebase }) {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(firebaseUser => {
-      if (firebaseUser) {
-        setCurrentUser(firebaseUser);
-      }
-      else {
-        setCurrentUser(null);
-      }
-    });
-  });
+    firebase.auth().onAuthStateChanged(setCurrentUser);
+  }, []);
 
   function signOut() {
     firebase.auth().signOut();
