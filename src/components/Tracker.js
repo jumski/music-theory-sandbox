@@ -2,8 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
 import Entry from './Entry';
 
+function lastNumberOfDays(number) {
+  const today = new Date();
+  return [...Array(number).keys()].map(deltaDays => {
+    const date = new Date();
+    date.setDate(today.getDate() - deltaDays);
+    return date;
+  });
+}
+
 function Tracker({ firestore: db, trackerRef }) {
   const [tracker, setTracker] = useState(null);
+  const dates = lastNumberOfDays(7);
 
   useEffect(() => trackerRef.onSnapshot(setTracker), [trackerRef]);
 
@@ -12,7 +22,7 @@ function Tracker({ firestore: db, trackerRef }) {
     return <div>
       <h2>{name} ({tracker.id})</h2>
 
-      {entries.map(e => <Entry key={e.id} entryRef={e}/>)}
+      {dates.map(d => <Entry key={d} tracker={tracker} date={d} />)}
     </div>;
   }
   else {

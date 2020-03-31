@@ -3,15 +3,31 @@ import { withFirebase } from '../firebase/context';
 import ShowEntry from './ShowEntry';
 import EditEntry from './EditEntry';
 
-function Entry({ entryRef }) {
+function Entry({ tracker, date, firebase, firestore: db }) {
   const [isEditing, setEditing] = useState(false);
   const [entry, setEntry] = useState(null);
 
   useEffect(() => {
-    entryRef.onSnapshot(setEntry)
-  }, [entryRef]);
+    const dateString = date.toISOString().split('T')[0];
+    const query = db.collection('entries')
+      .where('tracker', '==', tracker.ref)
+      .where('date', '==', dateString);
+    query.get().then(({ docs: [e] }) => {
+      if (e) setEntry(e);
+    });
+  }, [date, db, tracker]);
 
-  if (isEditing || !entry.exists) {
+  useEffect(() => {
+    if (entry) {
+      entry.ref.onSnapshot(setEntry)
+    }
+  }, [entry]);
+
+  if (!entry) {
+    return "";
+  }
+
+  if (isEditing) {
     return <EditEntry entry={entry} onSave={() => setEditing(false)}/>;
   }
   else {
