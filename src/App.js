@@ -1,24 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 import AuthenticatedOrLogIn from './auth/AuthenticatedOrLogIn';
-import { withCurrentUser } from './auth/context';
 import { withFirebase } from './firebase/context';
 import Tracker from './components/Tracker';
 
-const TestCurrentUserContextConsumer = withCurrentUser(({ currentUser }) => {
-  return <div>XXXX={currentUser.displayName}</div>;
-});
+function App({ firestore: db }) {
+  const [trackerId, setTrackerId] = useState("g5ICQ3A6nXfyhQ0xlA1g");
+  const trackerRef = db.doc(`trackers/${trackerId}`);
 
-function App() {
   return (
     <div className="App">
-      <AuthenticatedOrLogIn>
-        <TestCurrentUserContextConsumer />
-        <Tracker trackerId={"g5ICQ3A6nXfyhQ0xlA1g"} />
+      <AuthenticatedOrLogIn onSignIn={() => {}}>
+        <Tracker trackerRef={trackerRef} />
       </AuthenticatedOrLogIn>
     </div>
   );
 }
 
-export default App;
+export default withFirebase(App);

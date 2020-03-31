@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
 import Entry from './Entry';
 
-function Tracker({ firestore: db, trackerId }) {
+function Tracker({ firestore: db, trackerRef: { id: trackerId } }) {
   const [tracker, setTracker] = useState(null);
   const [entries, setEntries] = useState([]);
 
