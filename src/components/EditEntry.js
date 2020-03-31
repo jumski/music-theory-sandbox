@@ -4,9 +4,12 @@ export default function EditEntry({ entry, onSave }) {
   const { date } = entry.data();
   const [notes, setNotes] = useState(entry.data().notes);
   const [parameters, setParameters] = useState(entry.data().parameters);
+  const [isSaving, setSaving] = useState(false);
 
   async function saveEntry() {
+    setSaving(true);
     await entry.ref.set({ notes: notes, parameters: parameters }, { merge: true });
+    setSaving(false);
     onSave();
   }
 
@@ -14,7 +17,7 @@ export default function EditEntry({ entry, onSave }) {
     setParameters({ ...parameters, [name]: value });
   }
 
-  return <div>
+  return <div style={{opacity: isSaving ? '0.4' : '1'}}>
     <h3>{date} <input type="text" value={notes} onChange={setNotes}/></h3>
     <ul>{Object.entries(parameters).map(([name, value]) => {
       return <li key={name}>
@@ -26,6 +29,6 @@ export default function EditEntry({ entry, onSave }) {
       </li>;
     })}</ul>
 
-    <button onClick={saveEntry}>Save</button>
+    <button onClick={saveEntry} disabled={isSaving}>Save</button>
   </div>;
 }
