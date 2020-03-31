@@ -30,7 +30,7 @@ function Tracker({ firestore: db, trackerId }) {
     return <div>
       <h2>{name} ({tracker.id})</h2>
 
-      <ul>{entries.map(e => <Entry entry={e}/>)}</ul>
+      <ul>{entries.map(e => <Entry key={e.id} entry={e}/>)}</ul>
     </div>;
   }
   else {
