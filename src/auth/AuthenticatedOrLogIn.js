@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
+import CurrentUserContext from './context';
 
 // This components contains signin/signout logic
 // It will render "Log in via google!" button if no auth session is found,
@@ -28,13 +29,11 @@ function AuthenticatedOrLogIn({ children, firebase }) {
   };
 
   if (currentUser) {
-    return <>
-      <div>
-        logged in as {currentUser.displayName} (uid={currentUser.uid})
-        <button onClick={signOut}>Sign out</button>
-      </div>
+    return <CurrentUserContext.Provider value={currentUser}>
+      logged in as {currentUser.displayName} (uid={currentUser.uid})
+      <button onClick={signOut}>Sign out</button>
       {children}
-    </>;
+    </CurrentUserContext.Provider>;
   }
   else {
     return <>
