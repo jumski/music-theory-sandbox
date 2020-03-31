@@ -1,9 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import firebase from './firebase/init';
+import { withFirebase } from './firebase/context';
 
-function App() {
+function App({ auth }) {
   return (
     <div className="App">
       test
@@ -11,4 +11,4 @@ function App() {
   );
 }
 
-export default App;
+export default withFirebase(App);
