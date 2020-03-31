@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
 import CurrentUserContext from './context';
+import {
+  Button,
+} from '@material-ui/core';
 
 // This components contains signin/signout logic
 // It will render "Log in via google!" button if no auth session is found,
@@ -30,15 +33,20 @@ function AuthenticatedOrLogIn({ children, firebase }) {
 
   if (currentUser) {
     return <CurrentUserContext.Provider value={currentUser}>
-      logged in as {currentUser.displayName} (uid={currentUser.uid})
-      <button onClick={signOut}>Sign out</button>
+      {/* logged in as {currentUser.displayName} (uid={currentUser.uid}) */}
+      {currentUser.displayName}
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={signOut}>
+        Sign out
+      </Button>
       {children}
     </CurrentUserContext.Provider>;
   }
   else {
     return <>
-      <div>Not logged in :(</div>
-      <button onClick={showAuthPopup}>Log in via google!</button>
+      <Button variant="contained" color="primary" onClick={showAuthPopup}>Log in via google!</Button>
     </>;
   }
 };
