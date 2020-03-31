@@ -3,15 +3,15 @@ import { withFirebase } from '../firebase/context';
 import ShowEntry from './ShowEntry';
 import EditEntry from './EditEntry';
 
-function Entry(props) {
+function Entry({ entryRef }) {
   const [isEditing, setEditing] = useState(false);
-  const [entry, setEntry] = useState(props.entry);
+  const [entry, setEntry] = useState(null);
 
   useEffect(() => {
-    entry.ref.onSnapshot(setEntry)
-  }, []);
+    entryRef.onSnapshot(setEntry)
+  }, [entryRef]);
 
-  if (isEditing) {
+  if (isEditing || !entry.exists) {
     return <EditEntry entry={entry} onSave={() => setEditing(false)}/>;
   }
   else {

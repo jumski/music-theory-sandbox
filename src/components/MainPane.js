@@ -3,6 +3,15 @@ import Tracker from './Tracker';
 import { withCurrentUser } from '../auth/context';
 import { withFirebase } from '../firebase/context';
 
+function lastNumberOfDays(number) {
+  const today = new Date();
+  return [...Array(number).keys()].map(deltaDays => {
+    const date = new Date();
+    date.setDate(today.getDate() - deltaDays);
+    return date;
+  });
+}
+
 function MainPane({ currentUser, firestore: db }) {
   const [user, setUser] = useState(null);
   const userRef = db.doc(`users/${currentUser.uid}`);
@@ -13,7 +22,17 @@ function MainPane({ currentUser, firestore: db }) {
     }
     else {
       const trackerRef = db.collection('trackers').doc();
-      trackerRef.set({ name: currentUser.displayName, entries: [] }, { merge: true })
+      const entriesRefs = [];
+      // const entriesRefs = lastNumberOfDays(7).map(date => {
+      //   const dateString = date.toISOString().split('T')[0];
+      //   const entryRef = db.collection('entries').doc()
+      // });
+
+      trackerRef.set({
+        name: currentUser.displayName,
+        entries: []
+      }, { merge: true })
+
       userRef.set({
         name: currentUser.displayName,
         trackers: [trackerRef]
