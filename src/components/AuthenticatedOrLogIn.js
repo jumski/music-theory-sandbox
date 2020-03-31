@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
 
+// This components contains signin/signout logic
+// It will render "Log in via google!" button if no auth session is found,
+// or render children if session is found.
 function AuthenticatedOrLogIn({ children, firebase }) {
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+      if (firebaseUser) {
+        setCurrentUser(firebaseUser);
+      }
+      else {
+        setCurrentUser(null);
+      }
+    });
+  });
+
+  function signOut() {
+    firebase.auth().signOut();
+  }
 
   function showAuthPopup() {
-    if (!user) {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider)
-        .then(({ user }) => setUser(user))
-        .catch(err => console.log('error', err));
-    }
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
   };
 
-  if (user) {
+  if (currentUser) {
     return <>
-      <div>logged in as {user.displayName}</div>
+      <div>
+        logged in as {currentUser.displayName} (uid={currentUser.uid})
+        <button onClick={signOut}>Sign out</button>
+      </div>
       {children}
     </>;
   }
