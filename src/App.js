@@ -1,26 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { withFirebase } from './firebase/context';
+import AuthenticatedOrLogIn from './components/AuthenticatedOrLogIn';
 
-function App({ firebase }) {
-  const { currentUser } = firebase.auth();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    if (!user) {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider)
-        .then(({ user }) => setUser(user))
-        .catch(err => console.log('error', err));
-    }
-  });
-
+function App() {
   return (
     <div className="App">
-      user={user ? user.displayName : 'not logged in'}
+      <AuthenticatedOrLogIn>
+        kartofle
+      </AuthenticatedOrLogIn>
     </div>
   );
 }
 
-export default withFirebase(App);
+export default App;
