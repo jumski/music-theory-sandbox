@@ -12,22 +12,39 @@ function Entry({ tracker, date, firebase, firestore: db }) {
 
   useEffect(() => entryRef.onSnapshot(setEntry), []);
 
+  async function createEmptyEntry() {
+    const defaultEntryData = {
+      notes: '',
+      parameters: {
+        cough: false,
+        highFever: false,
+        runnyNose: false,
+        lossOfSmell: false
+      }
+    };
+    await entryRef.set(defaultEntryData, { merge: true });
+    setEditing(true);
+  }
+
   if (!entry) {
-    return "loading entry...";
+    return <div>
+      <h3>{dateString}</h3>
+      Loading entry...
+    </div>;
   }
 
   if (!entry.exists) {
     return <div>
       <h3>{dateString}</h3>
-      Entry for date '{dateString}' does not exists, wanna create?
+      Entry for date '{dateString}' does not exists, <a href='#' onClick={createEmptyEntry}>wanna create?</a>
     </div>;
   }
 
   if (isEditing) {
-    return <EditEntry date={dateString} entry={entry} onSave={() => setEditing(false)}/>;
+    return <EditEntry dateString={dateString} entry={entry} onSave={() => setEditing(false)}/>;
   }
   else {
-    return <ShowEntry date={dateString} entry={entry} onClick={() => setEditing(true)}/>;
+    return <ShowEntry dateString={dateString} entry={entry} onClick={() => setEditing(true)}/>;
   }
 }
 

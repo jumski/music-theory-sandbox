@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-export default function EditEntry({ entry, onSave }) {
-  const { date } = entry.data();
+export default function EditEntry({ dateString, entry, onSave }) {
   const [notes, setNotes] = useState(entry.data().notes);
   const [parameters, setParameters] = useState(entry.data().parameters);
   const [isSaving, setSaving] = useState(false);
@@ -18,7 +17,7 @@ export default function EditEntry({ entry, onSave }) {
   }
 
   return <div style={{opacity: isSaving ? '0.4' : '1'}}>
-    <h3>{date} <input type="text" value={notes} onChange={setNotes}/></h3>
+    <h3>{dateString} <input type="text" value={notes} onChange={setNotes}/></h3>
     <ul>{Object.entries(parameters).map(([name, value]) => {
       return <li onClick={() => setParameter(name, !value)} style={{cursor: 'pointer'}} key={name}>
         {name}: <input type="checkbox" checked={value}/>
