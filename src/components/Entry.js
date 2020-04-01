@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
 import ShowEntry from './ShowEntry';
 import EditEntry from './EditEntry';
+import DateAvatar from './DateAvatar';
+import {
+  IconButton,
+  Link,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core';
 
 function Entry({ tracker, date, firebase, firestore: db }) {
   const [isEditing, setEditing] = useState(false);
@@ -45,8 +53,29 @@ function Entry({ tracker, date, firebase, firestore: db }) {
 
   if (!entry.exists) {
     return <div>
-      <h3>{dateString}</h3>
-      Entry for date '{dateString}' does not exists, <a href='#' onClick={createEmptyEntry}>wanna create?</a>
+      <ListItem
+        divider
+        button
+        role='listitem'
+      >
+        <ListItemIcon>
+          <DateAvatar
+            dateString={dateString} />
+        </ListItemIcon>
+
+        <ListItemText
+          align='center'
+        >
+          Entry for this date does not exists,
+          <Link
+            component="button"
+            variant="body2"
+            onClick={createEmptyEntry}
+          >
+            wanna create?
+          </Link>
+        </ListItemText>
+      </ListItem>
     </div>;
   }
 
