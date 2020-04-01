@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
 import Entry from './Entry';
-
-function lastNumberOfDays(number) {
-  const today = new Date();
-  return [...Array(number).keys()].map(deltaDays => {
-    const date = new Date();
-    date.setDate(today.getDate() - deltaDays);
-    return date;
-  });
-}
+import { lastNumberOfDays } from '../helpers';
 
 function Tracker({ firestore: db, trackerRef }) {
   const [tracker, setTracker] = useState(null);
@@ -18,7 +10,7 @@ function Tracker({ firestore: db, trackerRef }) {
   useEffect(() => trackerRef.onSnapshot(setTracker), [trackerRef]);
 
   if (tracker) {
-    const { name, entries } = tracker.data();
+    const { name } = tracker.data();
     return <div>
       <h2>{name} ({tracker.id})</h2>
 
