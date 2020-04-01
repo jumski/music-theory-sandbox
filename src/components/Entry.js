@@ -5,6 +5,7 @@ import EditEntry from './EditEntry';
 
 function Entry({ tracker, date, firebase, firestore: db }) {
   const [isEditing, setEditing] = useState(false);
+  const [isCreating, setCreating] = useState(false);
   const [entry, setEntry] = useState(null);
 
   const dateString = date.toISOString().split('T')[0];
@@ -22,7 +23,9 @@ function Entry({ tracker, date, firebase, firestore: db }) {
         lossOfSmell: false
       }
     };
+    setCreating(true);
     await entryRef.set(defaultEntryData, { merge: true });
+    setCreating(false);
     setEditing(true);
   }
 
@@ -30,6 +33,13 @@ function Entry({ tracker, date, firebase, firestore: db }) {
     return <div>
       <h3>{dateString}</h3>
       Loading entry...
+    </div>;
+  }
+
+  if (isCreating) {
+    return <div>
+      <h3>{dateString}</h3>
+      Creating entry... please wait.
     </div>;
   }
 
