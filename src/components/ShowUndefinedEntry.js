@@ -1,46 +1,30 @@
 import React from 'react';
 import DateAvatar from './DateAvatar'
-
 import {
   IconButton,
   ListItem,
   ListItemIcon,
-  ListItemSecondaryAction,
   ListItemText,
+  ListItemSecondaryAction
 } from '@material-ui/core';
-
 import CreateIcon from '@material-ui/icons/Create';
 
-function parametersLabel(parameters) {
-  const symptoms = Object.keys(parameters).filter(key => parameters[key]);
-
-  if (symptoms.length === 0) return 'All OK';
-
-  return symptoms.join(', ');
-}
-
-export default function ShowEntry({ dateString, entry, onEdit }) {
-  const { notes, parameters } = entry.data();
-  const label = parametersLabel(parameters);
-
+export default function ShowUndefinedEntry({ dateString, primaryText, secondaryText, onEdit = ()=>{} }) {
   return <div>
     <ListItem
       divider
       button
-      aria-haspopup='true'
-      aria-controls='entry-menu'
       role='listitem'
     >
       <ListItemIcon>
         <DateAvatar
-          dateString={dateString}
-          color={label === 'All OK' ? 'green' : 'orange'}/>
+          dateString={dateString} />
       </ListItemIcon>
 
       <ListItemText
         align='center'
-        primary={label}
-        secondary={notes}
+        primary={primaryText}
+        secondary={secondaryText}
       />
 
       <ListItemSecondaryAction onClick={onEdit}>

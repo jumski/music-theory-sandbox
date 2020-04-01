@@ -11,11 +11,8 @@ function Tracker({ firestore: db, trackerRef }) {
   useEffect(() => trackerRef.onSnapshot(setTracker), [trackerRef]);
 
   if (tracker) {
-    const { name } = tracker.data();
     return <div>
-      <h2>{name} ({tracker.id})</h2>
       <List component="nav" aria-label="main entries">
-
         {dates.map(d => <Entry key={d} tracker={tracker} date={d} />)}
       </List>
     </div>;

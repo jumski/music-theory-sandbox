@@ -2,10 +2,6 @@ import React from 'react';
 import './App.css';
 import AuthenticatedOrLogIn from './auth/AuthenticatedOrLogIn';
 import MainPane from './components/MainPane';
-
-import { withCurrentUser } from './auth/context';
-import { withFirebase } from './firebase/context';
-import Tracker from './components/Tracker';
 import MenuIcon from '@material-ui/icons/Menu';
 import SignOutButton from './auth/SignOutButton';
 

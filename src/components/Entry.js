@@ -2,14 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../firebase/context';
 import ShowEntry from './ShowEntry';
 import EditEntry from './EditEntry';
-import DateAvatar from './DateAvatar';
-import {
-  IconButton,
-  Link,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@material-ui/core';
+import ShowUndefinedEntry from './ShowUndefinedEntry';
 
 function Entry({ tracker, date, firebase, firestore: db }) {
   const [isEditing, setEditing] = useState(false);
@@ -38,53 +31,35 @@ function Entry({ tracker, date, firebase, firestore: db }) {
   }
 
   if (!entry) {
-    return <div>
-      <h3>{dateString}</h3>
-      Loading entry...
-    </div>;
+    return <ShowUndefinedEntry
+      secondaryText="Loading entry..."
+      dateString={dateString}
+    />;
   }
 
   if (isCreating) {
-    return <div>
-      <h3>{dateString}</h3>
-      Creating entry... please wait.
-    </div>;
+    return <ShowUndefinedEntry
+      secondaryText="Creating Entry..."
+      dateString={dateString}
+    />;
   }
 
   if (!entry.exists) {
-    return <div>
-      <ListItem
-        divider
-        button
-        role='listitem'
-      >
-        <ListItemIcon>
-          <DateAvatar
-            dateString={dateString} />
-        </ListItemIcon>
-
-        <ListItemText
-          align='center'
-        >
-          Entry for this date does not exists,
-          <Link
-            component="button"
-            variant="body2"
-            onClick={createEmptyEntry}
-          >
-            wanna create?
-          </Link>
-        </ListItemText>
-      </ListItem>
-    </div>;
+    return <ShowUndefinedEntry
+      secondaryText="Entry for this date does not exists"
+      dateString={dateString}
+      onEdit={createEmptyEntry}
+    />;
   }
 
   if (isEditing) {
-    return <EditEntry dateString={dateString} entry={entry} onSave={() => setEditing(false)}/>;
+    return <>
+      <EditEntry dateString={dateString} entry={entry} onSave={() => setEditing(false)}/>
+      <ShowEntry dateString={dateString} entry={entry} onEdit={() => setEditing(true)}/>
+    </>;
   }
-  else {
-    return <ShowEntry dateString={dateString} entry={entry} onClick={() => setEditing(true)}/>;
-  }
+
+  return <ShowEntry dateString={dateString} entry={entry} onEdit={() => setEditing(true)}/>;
 }
 
 export default withFirebase(Entry);
