@@ -23,9 +23,9 @@ function MainPane({ currentUser, firestore: db }) {
   }), []);
 
   if (user) {
-    const [tracker] = user.data().trackers;
+    const [trackerRef] = user.data().trackers;
 
-    return <Tracker trackerRef={tracker} />;
+    return <Tracker trackerRef={trackerRef} />;
   }
   else {
     return <div>Loading user...</div>;

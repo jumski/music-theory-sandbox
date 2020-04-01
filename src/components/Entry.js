@@ -7,31 +7,27 @@ function Entry({ tracker, date, firebase, firestore: db }) {
   const [isEditing, setEditing] = useState(false);
   const [entry, setEntry] = useState(null);
 
-  useEffect(() => {
-    const dateString = date.toISOString().split('T')[0];
-    const query = db.collection('entries')
-      .where('tracker', '==', tracker.ref)
-      .where('date', '==', dateString);
-    query.get().then(({ docs: [e] }) => {
-      if (e) setEntry(e);
-    });
-  }, [date, db, tracker]);
+  const dateString = date.toISOString().split('T')[0];
+  const entryRef = db.doc(`trackers/${tracker.id}/entriesCollection/${dateString}`);
 
-  useEffect(() => {
-    if (entry) {
-      entry.ref.onSnapshot(setEntry)
-    }
-  }, [entry]);
+  useEffect(() => entryRef.onSnapshot(setEntry), []);
 
   if (!entry) {
-    return "";
+    return "loading entry...";
+  }
+
+  if (!entry.exists) {
+    return <div>
+      <h3>{dateString}</h3>
+      Entry for date '{dateString}' does not exists, wanna create?
+    </div>;
   }
 
   if (isEditing) {
-    return <EditEntry entry={entry} onSave={() => setEditing(false)}/>;
+    return <EditEntry date={dateString} entry={entry} onSave={() => setEditing(false)}/>;
   }
   else {
-    return <ShowEntry entry={entry} onClick={() => setEditing(true)}/>;
+    return <ShowEntry date={dateString} entry={entry} onClick={() => setEditing(true)}/>;
   }
 }
 
