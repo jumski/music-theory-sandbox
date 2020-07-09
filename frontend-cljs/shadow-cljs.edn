@@ -1,5 +1,7 @@
 {:source-paths ["src"]
- :dependencies [[reagent "0.10.0"] [cider/cider-nrepl "0.25.2"]]
+ :dependencies [[reagent "0.10.0"]
+                [cider/cider-nrepl "0.25.2"]
+                [re-frame "1.0.0-rc6"]]
  :nrepl {:port 4444}
  :dev-http {8080 "public"}
  :builds {:app {:target :browser
