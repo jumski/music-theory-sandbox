@@ -1,0 +1,10 @@
+{:source-paths ["src"]
+ :dependencies [[reagent "0.10.0"] [cider/cider-nrepl "0.25.2"]]
+ :nrepl {:port 4444}
+ :dev-http {8080 "public"}
+ :builds {:app {:target :browser
+                :output-dir "public/js"
+                :asset-path "/js"
+                :main app.core/main!
+                :devtools {:after-load app.core/reload!}
+                :modules {:main {:init-fn app.core/main!}}}}}

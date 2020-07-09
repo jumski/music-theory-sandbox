@@ -1,0 +1,16 @@
+{
+  "name": "looptrap-frontend-cljs",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/jumski/looptrap",
+  "author": "Wojciech Majewski <jumski@gmail.com>",
+  "license": "Propertiary",
+  "private": true,
+  "devDependencies": {
+    "shadow-cljs": "^2.10.14"
+  },
+  "dependencies": {
+    "react": "16.13.0",
+    "react-dom": "16.13.0"
+  }
+}
