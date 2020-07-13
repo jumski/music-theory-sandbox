@@ -7,7 +7,7 @@
  :nrepl {:port 4444}
  :dev-http {8080 "public"}
  :builds {:app {:target :browser
-                :output-dir "public/js"
+                :output-dir "public/js/compiled"
                 :asset-path "/js"
                 :main app.core/main!
                 :modules {:main {:init-fn app.core/main!}}
