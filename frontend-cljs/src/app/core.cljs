@@ -25,7 +25,7 @@
   (let [counter (rf/subscribe [:counter])]
     [:<>
      [:button {:on-click #(rf/dispatch [:update-counter -1])} "-"]
-     [:span (str "counter =" @counter)]
+     [:span (str "counter = " @counter)]
      [:button {:on-click #(rf/dispatch [:update-counter 1])} "+"]]))
 
 ;;; META stuff
